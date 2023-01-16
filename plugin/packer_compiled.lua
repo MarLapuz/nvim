@@ -165,6 +165,11 @@ _G.packer_plugins = {
     path = "/Users/khel/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
   },
+  ["mini.nvim"] = {
+    loaded = true,
+    path = "/Users/khel/.local/share/nvim/site/pack/packer/start/mini.nvim",
+    url = "https://github.com/echasnovski/mini.nvim"
+  },
   ["nightfox.nvim"] = {
     loaded = true,
     path = "/Users/khel/.local/share/nvim/site/pack/packer/start/nightfox.nvim",

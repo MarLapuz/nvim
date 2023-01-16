@@ -64,6 +64,7 @@ return packer.startup(function(use)
 
 	-- bufferline
 	use({ "akinsho/bufferline.nvim", tag = "v3.*", requires = "nvim-tree/nvim-web-devicons" })
+  use({ 'echasnovski/mini.nvim', branch = 'stable' })
 
 	-- colorizer
 	use("norcalli/nvim-colorizer.lua")
