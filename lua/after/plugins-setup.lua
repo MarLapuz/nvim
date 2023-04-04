@@ -34,9 +34,11 @@ return packer.startup(function(use)
 	use("nvim-lua/plenary.nvim") -- lua functions that many plugins use
 
 	--use("bluz71/vim-nightfly-guicolors") -- preferred colorscheme
-	use("EdenEast/nightfox.nvim")
-
-	use("christoomey/vim-tmux-navigator") -- tmux & split window navigation
+	--use("EdenEast/nightfox.nvim")
+	use({
+		"catppuccin/nvim",
+		as = "catppuccin",
+	})
 
 	use("szw/vim-maximizer") -- maximizes and restores current window
 
@@ -46,6 +48,7 @@ return packer.startup(function(use)
 
 	-- commenting with gc
 	use("numToStr/Comment.nvim")
+	use("JoosepAlviste/nvim-ts-context-commentstring")
 
 	-- file explorer
 	use("nvim-tree/nvim-tree.lua")
@@ -60,11 +63,13 @@ return packer.startup(function(use)
 	use("nvim-telescope/telescope.nvim")
 	-- use("nvim-telescope/telescope-file-browser.nvim")
 	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" }) -- dependency for better sorting performance
-	-- use({ "nvim-telescope/telescope.nvim", branch = "0.1.x" }) -- fuzzy finder
+
+	-- harpoon
+	use("theprimeagen/harpoon")
 
 	-- bufferline
 	use({ "akinsho/bufferline.nvim", tag = "v3.*", requires = "nvim-tree/nvim-web-devicons" })
-  use({ 'echasnovski/mini.nvim', branch = 'stable' })
+	use({ "echasnovski/mini.nvim", branch = "stable" })
 
 	-- colorizer
 	use("norcalli/nvim-colorizer.lua")
@@ -73,6 +78,9 @@ return packer.startup(function(use)
 	use("hrsh7th/nvim-cmp") -- completion plugin
 	use("hrsh7th/cmp-buffer") -- source for text in buffer
 	use("hrsh7th/cmp-path") -- source for file system paths
+
+	-- copilot
+	use("github/copilot.vim")
 
 	-- snippets
 	use("L3MON4D3/LuaSnip") -- snippet engine
@@ -89,9 +97,6 @@ return packer.startup(function(use)
 	use({
 		"glepnir/lspsaga.nvim",
 		branch = "main",
-		config = function()
-			require("lspsaga").setup({})
-		end,
 	}) -- enhanced lsp uis
 	use("jose-elias-alvarez/typescript.nvim") -- additional functionality for typescript server (e.g. rename file & update imports)
 	use("onsails/lspkind.nvim") -- vs-code like icons for autocompletion
@@ -111,8 +116,7 @@ return packer.startup(function(use)
 	})
 
 	-- folding lines of code
-	use({ "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" })
-	use({ "neoclide/coc.nvim", branch = "release" })
+	--[[ use({ "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" }) ]]
 
 	-- auto closing
 	use("windwp/nvim-autopairs") -- autoclose parens, brackets, quotes, etc...
@@ -121,6 +125,17 @@ return packer.startup(function(use)
 	-- git integration
 	use("lewis6991/gitsigns.nvim") -- show line modifications on left hand side
 	use("dinhhuy258/git.nvim") -- for git blame & browse
+
+	-- nvim surround
+	use({
+		"kylechui/nvim-surround",
+		tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+		config = function()
+			require("nvim-surround").setup({
+				-- Configuration here, or leave empty to use defaults
+			})
+		end,
+	})
 
 	if packer_bootstrap then
 		require("packer").sync()

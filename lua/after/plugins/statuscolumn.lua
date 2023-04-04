@@ -56,11 +56,11 @@ _G.StatusColumn = {
 				return icon
 			end
 
-			if vim.fn.foldclosed(lnum) == -1 then
-				icon = Icons.misc.expanded
-			else
-				icon = Icons.misc.collapsed
-			end
+			-- if vim.fn.foldclosed(lnum) == -1 then
+			-- 	icon = Icons.misc.expanded
+			-- else
+			-- 	icon = Icons.misc.collapsed
+			-- end
 
 			return icon
 		end,

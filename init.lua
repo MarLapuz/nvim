@@ -1,3 +1,4 @@
+--[[ require("after.core.neovide") ]]
 require("after.plugins-setup")
 require("after.core.options")
 require("after.core.keymaps")
@@ -19,3 +20,4 @@ require("after.plugins.gitsigns")
 require("after.plugins.bufferline")
 require("after.plugins.colorizer")
 require("after.plugins.prettier")
+require("after.plugins.copilot")

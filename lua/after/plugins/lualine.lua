@@ -1,78 +1,196 @@
--- import lualine plugin safely
-local status, lualine = pcall(require, "lualine")
-if not status then
-	return
+local colors = {
+	red = "#cdd6f4",
+	grey = "#181825",
+	--black = "#1e1e2e",
+	black = "#17191E",
+	white = "#313244",
+	light_green = "#6c7086",
+	orange = "#54b9ff",
+	green = "#48e8bf",
+	blue = "#ABAFFF",
+}
+
+local theme = {
+	normal = {
+		a = { fg = colors.black, bg = colors.blue },
+		b = { fg = colors.blue, bg = colors.white },
+		c = { fg = colors.white, bg = colors.black },
+		z = { fg = colors.white, bg = colors.black },
+	},
+	insert = { a = { fg = colors.black, bg = colors.orange } },
+	visual = { a = { fg = colors.black, bg = colors.green } },
+	replace = { a = { fg = colors.black, bg = colors.green } },
+}
+
+local vim_icons = {
+	function()
+		return " "
+	end,
+	separator = { left = "", right = "" },
+	color = { bg = colors.white, fg = colors.green },
+}
+
+local space = {
+	function()
+		return " "
+	end,
+	color = { bg = colors.black, fg = "#80A7EA" },
+}
+
+local filename = {
+	"filename",
+	color = { bg = colors.blue, fg = "#242735" },
+	separator = { left = "", right = "" },
+}
+
+local filetype = {
+	"filetype",
+	icon_only = true,
+	colored = true,
+	color = { bg = colors.white },
+	separator = { left = "", right = "" },
+}
+
+local filetype_tab = {
+	"filetype",
+	icon_only = true,
+	colored = true,
+	color = { bg = colors.white },
+}
+
+local buffer = {
+	--	require("tabline").tabline_buffers,
+	separator = { left = "", right = "" },
+}
+
+local tabs = {
+	--	require("tabline").tabline_tabs,
+	separator = { left = "", right = "" },
+}
+
+local fileformat = {
+	"fileformat",
+	color = { bg = colors.blue, fg = colors.white },
+	separator = { left = "", right = "" },
+}
+
+local encoding = {
+	"encoding",
+	color = { bg = colors.white, fg = colors.green },
+	separator = { left = "", right = "" },
+}
+
+local branch = {
+	"branch",
+	color = { bg = colors.green, fg = colors.white },
+	separator = { left = "", right = "" },
+}
+
+local diff = {
+	"diff",
+	color = { bg = colors.white, fg = colors.white },
+	separator = { left = "", right = "" },
+}
+
+local modes = {
+	"mode",
+	fmt = function(str)
+		return str:sub(1, 1)
+	end,
+	color = { bg = colors.orange, fg = "#1e1e2e" },
+	separator = { left = "", right = "" },
+}
+
+local function getLspName()
+	local msg = "No Active Lsp"
+	local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
+	local clients = vim.lsp.get_active_clients()
+	if next(clients) == nil then
+		return msg
+	end
+	for _, client in ipairs(clients) do
+		local filetypes = client.config.filetypes
+		if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+			return "  " .. client.name
+		end
+	end
+	return "  " .. msg
 end
 
--- get lualine nightfly theme
-local lualine_nightfly = require("lualine.themes.nightfly")
-
--- new colors for theme
-local new_colors = {
-	blue = "#65D1FF",
-	green = "#3EFFDC",
-	violet = "#FF61EF",
-	yellow = "#FFDA7B",
-	black = "#000000",
+local dia = {
+	"diagnostics",
+	color = { bg = colors.white, fg = "#80A7EA" },
+	separator = { left = "", right = "" },
 }
 
--- change nightlfy theme colors
-lualine_nightfly.normal.a.bg = new_colors.blue
-lualine_nightfly.insert.a.bg = new_colors.green
-lualine_nightfly.visual.a.bg = new_colors.violet
-lualine_nightfly.command = {
-	a = {
-		gui = "bold",
-		bg = new_colors.yellow,
-		fg = new_colors.black, -- black
-	},
+local lsp = {
+	function()
+		return getLspName()
+	end,
+	separator = { left = "", right = "" },
+	color = { bg = colors.green, fg = "#1e1e2e" },
 }
 
--- configure lualine with modified theme
-lualine.setup({
+require("lualine").setup({
+
 	options = {
-		theme = lualine_nightfly,
 		icons_enabled = true,
-		section_separators = { left = "", right = "" },
-		component_separators = { left = "", right = "" },
-		disabled_filetypes = {},
+		theme = theme,
+		component_separators = { left = "", right = "" },
+		section_separators = { left = "", right = "" },
+		disabled_filetypes = {
+			statusline = {},
+			winbar = {},
+		},
+		ignore_focus = {},
+		always_divide_middle = true,
+		globalstatus = true,
+		refresh = {
+			statusline = 1000,
+			tabline = 1000,
+			winbar = 1000,
+		},
 	},
+
 	sections = {
-		lualine_a = { "mode" },
-		lualine_b = { "branch" },
+		lualine_a = {
+			--{ 'mode', fmt = function(str) return str:gsub(str, "  ") end },
+			modes,
+			vim_icons,
+			--{ 'mode', fmt = function(str) return str:sub(1, 1) end },
+		},
+		lualine_b = {
+			space,
+		},
 		lualine_c = {
-			{
-				"filename",
-				file_status = true, -- displays file status (readonly status, modified status)
-				path = 0, -- 0 = just filename, 1 = relative path, 2 = absolute path
-			},
+
+			filename,
+			filetype,
+			space,
+			branch,
+			diff,
 		},
 		lualine_x = {
-			{
-				"diagnostics",
-				sources = { "nvim_diagnostic" },
-				symbols = { error = " ", warn = " ", info = " ", hint = " " },
-			},
-			"encoding",
-			"filetype",
+			space,
 		},
-		lualine_y = { "progress" },
-		lualine_z = { "location" },
+		lualine_y = {
+			encoding,
+			fileformat,
+			space,
+		},
+		lualine_z = {
+			dia,
+			lsp,
+		},
 	},
 	inactive_sections = {
 		lualine_a = {},
 		lualine_b = {},
-		lualine_c = {
-			{
-				"filename",
-				file_status = true, -- displays file status (readonly status, modified status)
-				path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
-			},
-		},
+		lualine_c = { "filename" },
 		lualine_x = { "location" },
 		lualine_y = {},
 		lualine_z = {},
 	},
-	tabline = {},
-	extensions = { "fugitive" },
+	winbar = {},
+	inactive_winbar = {},
 })

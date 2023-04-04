@@ -47,9 +47,11 @@ bufferline.setup({
 		-- 		return ""
 		-- 	end
 		-- end,
+		mode = "tabs",
 		show_buffer_close_icons = false,
 		show_close_icon = false,
 		separator_style = "thick",
+		--separator_style = "slant",
 		themable = false,
 		diagnostics = false,
 		custom_filter = function(buf, _buf_nums)
@@ -93,13 +95,13 @@ bufferline.setup({
 		close_button_visible = { fg = Colors.grey_light, bg = Colors.bg1 },
 
 		-- Visible but unfocused
-		buffer_visible = { fg = Colors.inactive, bg = Colors.bg1 },
+		buffer_visible = { fg = Colors.bg_cyan, bg = Colors.bg1 },
 
 		-- Active Tab close button
 		close_button_selected = { fg = Colors.fg, bg = Colors.none },
 
 		-- Active Buffer
-		buffer_selected = { fg = Colors.active, bg = Colors.none, bold = true },
+		buffer_selected = { fg = Colors.cyan, bg = Colors.none, bold = true },
 
 		-- Modified hidden buffer
 		modified = { fg = Colors.red, bg = Colors.bg0 },
@@ -126,6 +128,3 @@ bufferline.setup({
 		numbers = { fg = Colors.fg, bg = Colors.bg0 },
 	},
 })
-
-vim.keymap.set("n", "<Tab>", "<Cmd>BufferLineCycleNext<CR>", {})
-vim.keymap.set("n", "<S-Tab>", "<Cmd>BufferLineCyclePrev<CR>", {})

@@ -35,4 +35,16 @@ treesitter.setup({
 	},
 	-- auto install above language parsers
 	auto_install = true,
+	-- incremental selection in visual mode
+	incremental_selection = {
+		enable = true,
+		keymaps = {
+			node_incremental = "<TAB>",
+			node_decremental = "<S-TAB>",
+		},
+	},
+	context_commentstring = {
+		enable = true,
+		enable_autocmd = false,
+	},
 })
